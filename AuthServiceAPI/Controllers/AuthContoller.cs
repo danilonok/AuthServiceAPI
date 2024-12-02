@@ -37,7 +37,7 @@ namespace AuthServiceAPI.Controllers
             else if(user.Credential.Password.Equals(userCredentials.Password)) { }
             {
                 // login successful
-                var token = JwtHelper.GenerateToken(user.Credential.Email, _secretKey, _tokenExpiryMinutes);
+                var token = JwtHelper.GenerateToken(user.Credential.Email, user.Id.ToString(), _secretKey, _tokenExpiryMinutes);
                 return Ok(new TokenResponse
                 {
                     Token = token,

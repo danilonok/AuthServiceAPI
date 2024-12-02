@@ -6,7 +6,7 @@ namespace AuthServiceAPI.Helpers
 {
     public static class JwtHelper
     {
-        public static string GenerateToken(string username, string secretKey, int expiryMinutes)
+        public static string GenerateToken(string username, string id, string secretKey, int expiryMinutes)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -14,6 +14,7 @@ namespace AuthServiceAPI.Helpers
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, username),
+                new Claim(ClaimTypes.NameIdentifier, id),
                 new Claim(ClaimTypes.Role, "User")
             };
 
