@@ -51,11 +51,11 @@ namespace AuthServiceAPI.Controllers
 
 
         [HttpPost("register")]
-        public async Task<ActionResult<TokenResponse>> Register([FromBody] UserCredential userCredentials)
+        public async Task<ActionResult<TokenResponse>> Register([FromBody] UserCreationModel userCredentials)
         {
 
 
-            if (EmailHelper.IsValidEmail(userCredentials.Email) && !string.IsNullOrEmpty(userCredentials.Password))
+            if (EmailHelper.IsValidEmail(userCredentials.Email) && !string.IsNullOrEmpty(userCredentials.Password) && !string.IsNullOrEmpty(userCredentials.FirstName) && !string.IsNullOrEmpty(userCredentials.LastName))
             {
                 _context.Users.Add(new Models.User
                 {
@@ -63,14 +63,18 @@ namespace AuthServiceAPI.Controllers
                     {
                         Email = userCredentials.Email,
                         Password = userCredentials.Password
-                    }
+                    },
+                    FirstName = userCredentials.FirstName,
+                    LastName = userCredentials.LastName,
+                    Birthday = userCredentials.Birthday,
+                    
                 });
                 await _context.SaveChangesAsync();
                 return Ok("User was created succesfully."); 
 
             }
 
-            return BadRequest("Invalid username or password.");
+            return BadRequest("Invalid user data.");
 
         }
     }

@@ -1,0 +1,24 @@
+services:
+  authserviceapi:
+    image: ${DOCKER_REGISTRY-}authserviceapi
+    container_name: authservice.api
+    build:
+      context: AuthServiceAPI
+      dockerfile: Dockerfile
+    ports:
+    - "5000:5000"
+    - "5001:5001"
+  authservice.database:
+    image: postgres:latest
+    container_name: authservice.database
+    environment:
+    - POSTGRES_DB=auth
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/auth-db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+networks:
+  mynetwork:
+    driver: bridge
